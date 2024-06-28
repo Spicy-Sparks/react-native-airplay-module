@@ -1,18 +1,28 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-airplay-module';
+import AirPlay from 'react-native-airplay-module';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
   React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+    AirPlay.startScan();
+
+    AirPlay.AirPlayListener.addListener('deviceConnected', ({ devices }) => {
+      console.log(devices);
+    });
+
+    return () => {
+      AirPlay.disconnect();
+    };
   }, []);
+
+  const openMenu = () => {
+    AirPlay.openMenu();
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text onPress={openMenu}>Open AirPlay</Text>
     </View>
   );
 }

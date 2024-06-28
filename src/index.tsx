@@ -1,22 +1,27 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
 
-const LINKING_ERROR =
-  `The package 'react-native-airplay-module' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
+const AirplayModule = NativeModules.AirplayModule;
 
-const AirplayModule = NativeModules.AirplayModule
-  ? NativeModules.AirplayModule
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
+const AirPlayListener = new NativeEventEmitter(AirplayModule);
 
-export function multiply(a: number, b: number): Promise<number> {
-  return AirplayModule.multiply(a, b);
-}
+const startScan = function () {
+  if (Platform.OS !== 'ios' || !AirplayModule) return;
+  return AirplayModule.startScan();
+};
+
+const disconnect = function () {
+  if (Platform.OS !== 'ios' || !AirplayModule) return;
+  return AirplayModule.disconnect();
+};
+
+const openMenu = function () {
+  if (Platform.OS !== 'ios' || !AirplayModule) return;
+  return AirplayModule.openMenu();
+};
+
+export default {
+  AirPlayListener,
+  startScan,
+  disconnect,
+  openMenu,
+};
