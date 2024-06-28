@@ -1,6 +1,6 @@
-# react-native-mediastore
+# react-native-airplay-module
 
-React Native Google One Tip Signin
+React Native AirPlay Module
 
 ## Installation
 

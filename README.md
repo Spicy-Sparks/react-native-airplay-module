@@ -1,6 +1,6 @@
 # react-native-airplay-module
 
-React Native Airplay module
+React Native AirPlay Module
 
 ## Installation
 
@@ -8,14 +8,31 @@ React Native Airplay module
 npm install react-native-airplay-module
 ```
 
+```sh
+yarn add react-native-airplay-module
+```
+
 ## Usage
 
 ```js
-import { multiply } from 'react-native-airplay-module';
+import AirPlay from 'react-native-airplay-module'
 
-// ...
+useEffect(() => {
+   AirPlay.startScan()
 
-const result = await multiply(3, 7);
+   AirPlay.AirPlayListener.addListener('deviceConnected', ({ devices }) => {
+      console.log(devices)
+   })
+
+   return () => {
+      AirPlay.disconnect()
+   }
+}, [])
+
+const openMenu = () => {
+   AirPlay.openMenu()
+}
+
 ```
 
 ## Contributing
@@ -25,7 +42,3 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
